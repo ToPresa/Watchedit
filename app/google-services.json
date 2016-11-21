@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "135964094653",
+    "firebase_url": "https://watchedit-b6587.firebaseio.com",
+    "project_id": "watchedit-b6587",
+    "storage_bucket": "watchedit-b6587.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135964094653:android:c016cc61c153fd8d",
+        "android_client_info": {
+          "package_name": "com.watchedit.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "135964094653-mh1jounrkerf5hscrsojc0ldt5etq0hi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGD-2SyyeKnU00wRLOm-C68_jd9YhvdpA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

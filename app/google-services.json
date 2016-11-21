@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "135964094653-56gvdmb7o7memvabh5v8d6s7cnierc50.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.watchedit.android",
+            "certificate_hash": "8EE2A297CAC5783317F6949BAC7E9F868AE4E769"
+          }
+        },
+        {
           "client_id": "135964094653-mh1jounrkerf5hscrsojc0ldt5etq0hi.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "135964094653-mh1jounrkerf5hscrsojc0ldt5etq0hi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

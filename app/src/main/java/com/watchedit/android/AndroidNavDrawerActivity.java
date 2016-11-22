@@ -29,6 +29,7 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
+    private String APIKEYthemovieDB = "cc0ee2bbfea45383a8c9381a4995aecd";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
 
         APIcall call = new APIcall();
         call.delegate=this;
-        call.execute("https://api.themoviedb.org/3/tv/popular?api_key=cc0ee2bbfea45383a8c9381a4995aecd&language=en-US");
+        call.execute("https://api.themoviedb.org/3/tv/popular?api_key="+APIKEYthemovieDB+"&language=en-US");
 
 
     }

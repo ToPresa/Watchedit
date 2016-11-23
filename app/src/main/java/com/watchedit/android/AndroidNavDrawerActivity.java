@@ -2,25 +2,35 @@ package com.watchedit.android;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.TextView;
 
 import com.watchedit.android.NavigationDrawerFragment;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+
 public class AndroidNavDrawerActivity extends AppCompatActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, AsyncResponse {
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
+    private String APIKEYthemovieDB = "cc0ee2bbfea45383a8c9381a4995aecd";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +45,21 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+
+        APIcall call = new APIcall();
+        call.delegate=this;
+        call.execute("https://api.themoviedb.org/3/tv/popular?api_key="+APIKEYthemovieDB+"&language=en-US");
+
+
     }
+    @Override
+    public void processFinish(String asyncresult){
+        //This method will get call as soon as your AsyncTask is complete. asyncresult will be your result.
+        TextView myAwesomeTextView = (TextView)findViewById(R.id.textView);
+        myAwesomeTextView.setText(asyncresult);
+    }
+
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -151,5 +175,4 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
-}
+    }

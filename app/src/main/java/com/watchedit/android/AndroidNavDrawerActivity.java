@@ -1,6 +1,7 @@
 package com.watchedit.android;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -46,26 +47,48 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
     }
 
     public void onSectionAttached(int number) {
+        // Handle navigation view item clicks here.
+
+        Fragment fragment = null;
         switch (number) {
             case 1:
+                // Handle the camera action
+                fragment = new LoginFragment();
                 mTitle = getString(R.string.title_section1);
                 break;
             case 2:
+                // Handle the camera action
+                fragment = new WhatchingListFragment();
                 mTitle = getString(R.string.title_section2);
                 break;
             case 3:
+                // Handle the camera action
+                fragment = new HotShowFragment();
                 mTitle = getString(R.string.title_section3);
                 break;
             case 4:
+                // Handle the camera action
+                fragment = new TopShowFragment();
                 mTitle = getString(R.string.title_section4);
                 break;
             case 5:
                 mTitle = getString(R.string.title_section5);
                 break;
             case 6:
+                // Handle the camera action
+                fragment = new SettingFragment();
                 mTitle = getString(R.string.title_section6);
                 break;
         }
+
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment).commit();
+
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //drawer.closeDrawer(GravityCompat.START);
     }
 
     public void restoreActionBar() {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidNavigationDrawerExample</string>
+    <string name="app_name">WatchedIT</string>
 
     <string name="title_section1">Enter WatchedIT</string>
     <string name="title_section2">My Watching List</string>
@@ -10,4 +10,14 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_hot_fragment">Hello hot fragment</string>
+    <string name="hello_login_fragment">Hello login fragment</string>
+    <string name="hello_top_fragment">Hello top fragment</string>
+    <string name="hello_settings_fragment">Hello settings fragment</string>
+    <string name="hello_reccomended_fragment">Hello reccomended fragment</string>
+    <string name="hello_watching_fragment">Hello watching fragment</string>
+
 </resources>

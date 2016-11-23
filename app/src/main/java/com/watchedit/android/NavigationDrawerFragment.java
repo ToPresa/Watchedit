@@ -27,7 +27,7 @@ public class NavigationDrawerFragment extends Fragment {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

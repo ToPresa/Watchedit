@@ -26,11 +26,11 @@ import java.net.URL;
 
 
 public class AndroidNavDrawerActivity extends AppCompatActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, AsyncResponse {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
-    private String APIKEYthemovieDB = "cc0ee2bbfea45383a8c9381a4995aecd";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +46,8 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-
-        APIcall call = new APIcall();
-        call.delegate=this;
-        call.execute("https://api.themoviedb.org/3/tv/popular?api_key="+APIKEYthemovieDB+"&language=en-US");
-
-
     }
-    @Override
-    public void processFinish(String asyncresult){
-        //This method will get call as soon as your AsyncTask is complete. asyncresult will be your result.
-        TextView myAwesomeTextView = (TextView)findViewById(R.id.textView);
-        myAwesomeTextView.setText(asyncresult);
-    }
+
 
 
     @Override

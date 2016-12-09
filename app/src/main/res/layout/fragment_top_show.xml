@@ -5,9 +5,11 @@
     tools:context="com.watchedit.android.TopShowFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_top_fragment" />
 
+    <ListView
+        android:id="@+id/list1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true">
+    </ListView>
 </FrameLayout>

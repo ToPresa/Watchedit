@@ -46,7 +46,7 @@ public class Display extends ArrayAdapter<String> {
         txtTitle.setText(itemname[position]);
         Picasso.with(context).load(imgid[position]).into(imageView);
         extratxt.setText(dates[position]);
-        ratess.setRating(Float.parseFloat(rates[position])/2);
+        ratess.setRating(Float.parseFloat(rates[position])*5/8);
         return rowView;
 
     };

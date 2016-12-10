@@ -2,12 +2,17 @@ package com.watchedit.android;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,12 +22,19 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.watchedit.android.NavigationDrawerFragment;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 
 public class AndroidNavDrawerActivity extends AppCompatActivity
@@ -30,13 +42,21 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
-
+    private AccessTokenTracker accessTokenTracker;
+    private String name="ola";
+    private ProfileTracker mProfileTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        accessTokenTracker=new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                updateWithToken(currentAccessToken);
+            }
+        };
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -67,7 +87,7 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
             case 1:
                 // Handle the camera action
                 fragment = new LoginFragment();
-                mTitle = getString(R.string.title_section1);
+                mTitle = name;//getString(R.string.title_section1);
                 break;
             case 2:
                 // Handle the camera action
@@ -162,6 +182,16 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
             super.onAttach(activity);
             ((AndroidNavDrawerActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
+        }
+    }
+    private void updateWithToken(AccessToken currentAccessToken) {
+        if (currentAccessToken != null) {
+
+          name=currentAccessToken.toString();
+
+        } else {
+
+            name=getString(R.string.title_section1);
         }
     }
     }

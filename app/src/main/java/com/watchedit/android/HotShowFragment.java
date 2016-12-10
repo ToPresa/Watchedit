@@ -1,9 +1,13 @@
 package com.watchedit.android;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,10 +31,12 @@ public class HotShowFragment extends Fragment implements AsyncResponse {
     List<String> itemimg = new ArrayList<String>();
     List<String> itemrate = new ArrayList<String>();
     List<String> itemdate = new ArrayList<String>();
+    List<String> itemid = new ArrayList<String>();
     String[] names;
     String[] imgs;
     String[] rates;
     String[] dates;
+    String[] ids;
     private String APIKEYthemovieDB = "cc0ee2bbfea45383a8c9381a4995aecd";
     public HotShowFragment() {
         // Required empty public constructor
@@ -61,19 +67,20 @@ public class HotShowFragment extends Fragment implements AsyncResponse {
     public void processFinish(String asyncresult){
         //This method will get call as soon as your AsyncTask is complete. asyncresult will be your result.
 
-try {
-    JSONObject json = new JSONObject(asyncresult);
-    JSONArray a = json.getJSONArray("results");
-    for (int i = 0; i < a.length() && i<10; ++i) {
-        json = a.getJSONObject(i);
-        itemname.add((String) (json.getString("name")));
-        itemimg.add("https://image.tmdb.org/t/p/w500"+(json.getString("poster_path")));
-        itemrate.add((String) (json.getString("vote_average")));
-        itemdate.add("First aired: "+ (json.getString("first_air_date")));
+    try {
+        JSONObject json = new JSONObject(asyncresult);
+        JSONArray a = json.getJSONArray("results");
+        for (int i = 0; i < a.length() && i<10; ++i) {
+            json = a.getJSONObject(i);
+            itemname.add((String) (json.getString("name")));
+            itemimg.add("https://image.tmdb.org/t/p/w500"+(json.getString("poster_path")));
+            itemrate.add((String) (json.getString("vote_average")));
+            itemdate.add("First aired: "+ (json.getString("first_air_date")));
+            itemid.add((String) (json.getString("id")));
+        }
+    }catch(Exception e){
+        return;
     }
-}catch(Exception e){
-    return;
-}
 
         names = new String[ itemname.size() ];
         itemname.toArray( names );
@@ -83,6 +90,8 @@ try {
         itemrate.toArray( rates );
         dates = new String[ itemdate.size() ];
         itemdate.toArray( dates );
+        ids = new String[ itemid.size() ];
+        itemid.toArray( ids );
 
         list=(ListView)getActivity().findViewById(R.id.list);
         Display adapter=new Display(this.getActivity(), names, imgs, rates, dates);
@@ -94,9 +103,13 @@ try {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // TODO Auto-generated method stub
-                String Slecteditem= names[+position];
-                Toast.makeText(getActivity().getApplicationContext(), Slecteditem, Toast.LENGTH_SHORT).show();
+                String Slecteditem= ids[+position];
+                //Toast.makeText(getActivity().getApplicationContext(), Slecteditem, Toast.LENGTH_SHORT).show();
 
+                Intent myIntent = new Intent(getActivity(), TvShowInf.class);
+                myIntent.putExtra("nameTvShow", Slecteditem);
+
+                getActivity().startActivity(myIntent);
             }
         });
     }

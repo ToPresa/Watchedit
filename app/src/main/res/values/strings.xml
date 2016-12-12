@@ -27,6 +27,7 @@
     <string name="action_sign_in_facebook">Facebook</string>
     <string name="action_sign_in_google">Google</string>
     <string name="action_sign_in_twitter">Twitter</string>
+    <string name="similar">Similar Shows</string>
 
     <string name="facebook_app_id">307012923025530</string>
 

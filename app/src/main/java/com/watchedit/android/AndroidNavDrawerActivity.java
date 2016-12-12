@@ -121,6 +121,7 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
                 break;
             case 5:
                 // Handle the camera action
+                fragment = new ReccomendedFragment();
                 mTitle = getString(R.string.title_section5);
                 break;
             case 6:

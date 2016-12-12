@@ -1,12 +1,15 @@
 package com.watchedit.android;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -30,11 +34,24 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,8 +65,11 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
     List<String> genres = new ArrayList<String>();
     List<String> banners = new ArrayList<String>();
     String[] generos;
+    String[] bannerfinal;
     private String APIKEYthemovieDB = "cc0ee2bbfea45383a8c9381a4995aecd";
     private  ImageView img22;
+
+    private ProgressDialog simpleWaitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +93,9 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
         ImageView img = (ImageView) findViewById(R.id.imageView1);
         ImageView img2 = (ImageView) findViewById(R.id.downarrow);
         ImageView img3 = (ImageView) findViewById(R.id.downarrow2);
+        Button btn1 = (Button) findViewById(R.id.button);
+        Button btn2 = (Button) findViewById(R.id.button2);
+        Button btn3 = (Button) findViewById(R.id.button3);
 
         img.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -95,6 +118,39 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
                 Intent intent = new Intent(TvShowInf.this, Banners.class);
                 TvShowInf.this.startActivity(intent);
 
+            }
+        });
+
+        btn1.setOnClickListener(new View.OnClickListener() {
+
+            ImageView downloadedImg = (ImageView) findViewById(R.id.banner1);
+            @Override
+            public void onClick(View v) {
+                // Execute DownloadImage AsyncTask
+                new DownloadFile().execute("https://image.tmdb.org/t/p/w500/vxuoMW6YBt6UsxvMfRNwRl9LtWS.jpg");
+            }
+
+        });
+
+        btn2.setOnClickListener(new View.OnClickListener() {
+
+            ImageView downloadedImg = (ImageView) findViewById(R.id.banner2);
+            @Override
+            public void onClick(View v) {
+
+                new DownloadFile().execute("https://image.tmdb.org/t/p/w500/vxuoMW6YBt6UsxvMfRNwRl9LtWS.jpg");
+            }
+
+
+        });
+
+        btn3.setOnClickListener(new View.OnClickListener() {
+
+            ImageView downloadedImg = (ImageView) findViewById(R.id.banner3);
+            @Override
+            public void onClick(View v) {
+
+                new DownloadFile().execute("https://image.tmdb.org/t/p/w500/vxuoMW6YBt6UsxvMfRNwRl9LtWS.jpg");
             }
         });
 
@@ -188,6 +244,9 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
         ImageView banner1 = (ImageView) findViewById(R.id.banner1);
         ImageView banner2 = (ImageView) findViewById(R.id.banner2);
         ImageView banner3 = (ImageView) findViewById(R.id.banner3);
+        Button btn1 = (Button) findViewById(R.id.button);
+        Button btn2 = (Button) findViewById(R.id.button2);
+        Button btn3 = (Button) findViewById(R.id.button3);
 
         desc.setTypeface(null, Typeface.BOLD);
         eps.setTypeface(null, Typeface.BOLD);
@@ -198,14 +257,20 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
         genres.toArray( generos );
         String randomBanners = randomBanner(banners);
         String[] banner = randomBanners.split(";");
+        bannerfinal = banner;
         for(int i=0; i< banner.length; i++) {
-            if(i==0)
-                Picasso.with(this).load("https://image.tmdb.org/t/p/w500"+banner[i]).into(banner1);
-            else if(i==1)
-                Picasso.with(this).load("https://image.tmdb.org/t/p/w500"+banner[i]).into(banner2);
-            else if(i==2)
-                Picasso.with(this).load("https://image.tmdb.org/t/p/w500"+banner[i]).into(banner3);
+            if (i == 0) {
+                Picasso.with(this).load("https://image.tmdb.org/t/p/w500" + banner[i]).into(banner1);
+                btn1.setVisibility(View.VISIBLE);
+            } else if (i == 1) {
+                Picasso.with(this).load("https://image.tmdb.org/t/p/w500" + banner[i]).into(banner2);
+                btn2.setVisibility(View.VISIBLE);
+            } else if (i == 2) {
+                Picasso.with(this).load("https://image.tmdb.org/t/p/w500" + banner[i]).into(banner3);
+                btn3.setVisibility(View.VISIBLE);
+            }
         }
+
         img22= (ImageView) findViewById(R.id.imageView3);
         img22.setScaleType(ImageView.ScaleType.FIT_XY);
 
@@ -223,4 +288,57 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
 
     }
 
+    class DownloadFile extends AsyncTask<String,Integer,Long> {
+        ProgressDialog mProgressDialog = new ProgressDialog(TvShowInf.this);// Change Mainactivity.this with your activity name.
+        String strFolderName;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressDialog.setMessage("Downloading");
+            mProgressDialog.setIndeterminate(false);
+            mProgressDialog.setMax(100);
+            mProgressDialog.setCancelable(true);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.show();
+        }
+        @Override
+        protected Long doInBackground(String... aurl) {
+            int count;
+            try {
+                URL url = new URL((String) aurl[0]);
+                URLConnection conexion = url.openConnection();
+                conexion.connect();
+                String targetFileName="Name"+".rar";//Change name and subname
+                int lenghtOfFile = conexion.getContentLength();
+                String PATH = Environment.getExternalStorageDirectory()+ "/";
+                File folder = new File(PATH);
+                if(!folder.exists()){
+                    folder.mkdir();//If there is no folder it will be created.
+                }
+                InputStream input = new BufferedInputStream(url.openStream());
+                OutputStream output = new FileOutputStream(PATH+targetFileName);
+                byte data[] = new byte[1024];
+                long total = 0;
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+                    publishProgress ((int)(total*100/lenghtOfFile));
+                    output.write(data, 0, count);
+                }
+                output.flush();
+                output.close();
+                input.close();
+            } catch (Exception e) {}
+            return null;
+        }
+        protected void onProgressUpdate(Integer... progress) {
+            mProgressDialog.setProgress(progress[0]);
+            if(mProgressDialog.getProgress()==mProgressDialog.getMax()){
+                mProgressDialog.dismiss();
+            }
+        }
+        protected void onPostExecute(String result) {
+        }
+    }
 }
+
+

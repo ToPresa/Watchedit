@@ -257,7 +257,46 @@
         android:layout_weight="0.59"
         android:layout_below="@+id/banners"
         android:layout_alignRight="@+id/downarrow2"
-        android:layout_alignEnd="@+id/downarrow2" />
+        android:layout_alignEnd="@+id/downarrow2"
+        android:paddingBottom="15dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/banner3"
+        android:layout_alignEnd="@+id/banner3"
+        android:translationZ="1dp"
+        android:elevation="1dp"
+        android:visibility="gone" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button2"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:translationZ="1dp"
+        android:elevation="1dp"
+        android:visibility="gone" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button3"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:translationZ="1dp"
+        android:elevation="1dp"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

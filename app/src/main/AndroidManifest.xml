@@ -18,6 +18,7 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
         <activity
             android:name=".AndroidNavDrawerActivity"
             android:label="@string/app_name">
@@ -27,7 +28,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TvShowInf"></activity>
+        <activity android:name=".TvShowInf">
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+        </activity>
+        <activity android:name=".Banners" />
+        <activity android:name=".Episodes"></activity>
     </application>
 
 </manifest>

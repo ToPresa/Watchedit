@@ -105,6 +105,7 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
                 mTitle = getString(R.string.title_section4);
                 break;
             case 5:
+                // Handle the camera action
                 mTitle = getString(R.string.title_section5);
                 break;
             case 6:
@@ -120,8 +121,6 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
                     .replace(R.id.container, fragment).commit();
 
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //drawer.closeDrawer(GravityCompat.START);
     }
 
     public void restoreActionBar() {

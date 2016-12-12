@@ -43,7 +43,6 @@ public class HotShowFragment extends Fragment implements AsyncResponse {
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

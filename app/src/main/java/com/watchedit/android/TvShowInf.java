@@ -2,7 +2,10 @@ package com.watchedit.android;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,12 +19,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,12 +43,13 @@ import java.util.Random;
 
 public class TvShowInf extends AppCompatActivity implements AsyncResponse{
 
-    String name, id, rate, image, description, numberseason, year, lastepisode;
+    String name, id, rate, image, description, numberseason, year, lastepisode, back;
     int episodecount=0;
     List<String> genres = new ArrayList<String>();
     List<String> banners = new ArrayList<String>();
     String[] generos;
     private String APIKEYthemovieDB = "cc0ee2bbfea45383a8c9381a4995aecd";
+    private  ImageView img22;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +112,7 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
         if(banners.size() >= 3) {
             for(int j=0; j < banners.size(); j++) {
                 double z = 0 + (Math.random() * (banners.size() - 0));
-                choosen = banners.get((int)z)+";";
+                choosen += banners.get((int)z)+";";
                 banners.remove((int)z);
                 x++;
                 if(x==3)
@@ -113,7 +121,7 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
         }
         else{
             for(int i=0; i < banners.size(); i++) {
-                choosen = banners.get(i)+";";
+                choosen += banners.get(i)+";";
             }
         }
         return choosen;
@@ -133,9 +141,33 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
             rate = (String) (json.getString("vote_average"));
             year = (String) (json.getString("first_air_date"));
             lastepisode = (String) (json.getString("last_air_date"));
+            back = json.getString("backdrop_path");
 
-            MyTask call = new MyTask();
-            call.execute(json);
+            //MyTask call = new MyTask();
+            //call.execute(json);
+            JSONArray a = null;
+            try {
+                a = json.getJSONArray("genres");
+                for (int i = 0; i < a.length(); ++i) {
+                    genres.add(((String) (a.getJSONObject(i).getString("name"))));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Log.e("sdd",json.toString());
+            JSONArray a2 = null;
+            a2 = json.getJSONArray("seasons");
+            Log.e("sdd",a2.toString());
+            try {
+
+                for (int i = 0; i < a2.length(); ++i) {
+                    banners.add(((String) (a2.getJSONObject(i).getString("poster_path"))));
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }catch(Exception e){
             return;
         }
@@ -164,7 +196,7 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
 
         generos = new String[ genres.size() ];
         genres.toArray( generos );
-       /* String randomBanners = randomBanner(banners);
+        String randomBanners = randomBanner(banners);
         String[] banner = randomBanners.split(";");
         for(int i=0; i< banner.length; i++) {
             if(i==0)
@@ -173,9 +205,12 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
                 Picasso.with(this).load("https://image.tmdb.org/t/p/w500"+banner[i]).into(banner2);
             else if(i==2)
                 Picasso.with(this).load("https://image.tmdb.org/t/p/w500"+banner[i]).into(banner3);
-        }*/
+        }
+        img22= (ImageView) findViewById(R.id.imageView3);
+        img22.setScaleType(ImageView.ScaleType.FIT_XY);
 
-
+        Picasso.with(this).load("https://image.tmdb.org/t/p/w500"+back).into(img22);
+        Picasso.with(this).load("https://image.tmdb.org/t/p/w500"+banners.get(0)).into(banner1);
         txtTitle.setText(name);
         Picasso.with(this).load(image).into(imageView);
         txtnumberseason.setText(numberseason+" seasons");
@@ -186,64 +221,6 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
         genress.setText("Genres: "+ Arrays.toString(generos));
         descriptions.setText(description);
 
-    }
-
-    private class MyTask extends AsyncTask<JSONObject, Integer, String> {
-
-        // Runs in UI before background thread is called
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            // Do something like display a progress bar
-        }
-
-        // This is run in a background thread
-        @Override
-        protected String doInBackground(JSONObject... params) {
-            // get the string from params, which is an array
-
-            JSONArray a = null;
-            try {
-                a = params[0].getJSONArray("genres");
-                for (int i = 0; i < a.length(); ++i) {
-                    params[0] = a.getJSONObject(i);
-                    genres.add(((String) (params[0].getString("name"))));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-           /* JSONArray a2 = null;
-            try {
-                a2 = params[0].getJSONArray("seasons");
-                for (int i = 0; i < a2.length(); ++i) {
-                    params[0] = a2.getJSONObject(i);
-                    banners.add(((String) (params[0].getString("poster_path"))));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }*/
-
-            return "this string is passed to onPostExecute";
-        }
-
-        // This is called from background thread but runs in UI
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-
-            // Do things like update the progress bar
-        }
-
-        // This runs in UI when background thread finishes
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            // Do things like hide the progress bar or change a TextView
-        }
     }
 
 }

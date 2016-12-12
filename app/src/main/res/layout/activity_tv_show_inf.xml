@@ -1,20 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="false">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_height="wrap_content"
     tools:context="com.watchedit.android.TvShowInf">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:translationZ="-1dp"
+        android:elevation="-1dp"
+        android:adjustViewBounds="false"
+        android:layout_alignParentTop="true" />
 
     <RelativeLayout android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/linearLayout">
+        android:id="@+id/linearLayout"
+        android:layout_below="@+id/imageView3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingRight="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_vertical_margin">
 
-    <ImageView
+
+
+        <ImageView
         android:id="@+id/imageView1"
         android:layout_width="40dp"
         android:layout_height="100dp"
@@ -46,7 +63,6 @@
         android:layout_width="40dp"
         android:layout_height="100dp"
         android:src="@drawable/plus"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -60,7 +76,9 @@
         android:layout_weight="0.59"
         android:layout_below="@+id/linearLayout"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/ratingBar"
+        android:layout_toLeftOf="@+id/ratingBar" />
 
     <LinearLayout android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -135,10 +153,11 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="small Text"
         android:id="@+id/description"
-        android:layout_below="@+id/icon"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin"
+        android:layout_below="@+id/downarrow"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="28dp" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -148,7 +167,9 @@
         android:id="@+id/descrip"
         android:layout_below="@+id/icon"
         android:layout_toRightOf="@+id/linearLayout2"
-        android:layout_toEndOf="@+id/linearLayout2" />
+        android:layout_toEndOf="@+id/linearLayout2"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -156,7 +177,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Episodes"
         android:id="@+id/eps"
-        android:layout_alignTop="@+id/descrip"
+        android:layout_below="@+id/descrip"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -176,7 +197,7 @@
         android:layout_height="45dp"
         android:id="@+id/downarrow"
         android:src="@drawable/down_arrow"
-        android:layout_below="@+id/genre"
+        android:layout_below="@+id/icon"
         android:layout_toRightOf="@+id/eps"
         android:layout_toEndOf="@+id/eps" />
 
@@ -185,7 +206,7 @@
         android:layout_height="45dp"
         android:id="@+id/downarrow2"
         android:src="@drawable/down_arrow"
-        android:layout_alignTop="@+id/downarrow"
+        android:layout_below="@+id/icon"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -197,7 +218,9 @@
         android:id="@+id/banners"
         android:layout_below="@+id/description"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin" />
 
     <RelativeLayout android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -205,24 +228,17 @@
         android:id="@+id/a">
 
 
+    </RelativeLayout>
+
     <ImageView
         android:id="@+id/banner1"
         android:layout_width="90dp"
         android:layout_height="160dp"
         android:padding="5dp"
-        android:layout_weight="0.59" />
-
-    </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/banner3"
-        android:layout_width="90dp"
-        android:layout_height="160dp"
-        android:padding="5dp"
         android:layout_weight="0.59"
-        android:layout_below="@+id/banners"
-        android:layout_toRightOf="@+id/linearLayout2"
-        android:layout_toEndOf="@+id/linearLayout2" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ImageView
         android:id="@+id/banner2"
@@ -232,4 +248,17 @@
         android:layout_weight="0.59"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:id="@+id/banner3"
+        android:layout_width="90dp"
+        android:layout_height="160dp"
+        android:padding="5dp"
+        android:layout_weight="0.59"
+        android:layout_below="@+id/banners"
+        android:layout_alignRight="@+id/downarrow2"
+        android:layout_alignEnd="@+id/downarrow2" />
+
+
 </RelativeLayout>
+</ScrollView>

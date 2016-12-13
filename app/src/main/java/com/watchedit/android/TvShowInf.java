@@ -2,6 +2,7 @@ package com.watchedit.android;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -60,6 +62,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -147,7 +150,7 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
             @Override
             public void onClick(View v) {
                 // Execute DownloadImage AsyncTask
-                new DownloadFile().execute("https://image.tmdb.org/t/p/w500/vxuoMW6YBt6UsxvMfRNwRl9LtWS.jpg");
+                DownloadFile(v,0);
             }
 
         });
@@ -158,7 +161,7 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
             @Override
             public void onClick(View v) {
 
-                new DownloadFile().execute("https://image.tmdb.org/t/p/w500/vxuoMW6YBt6UsxvMfRNwRl9LtWS.jpg");
+                DownloadFile(v,1);
             }
 
 
@@ -170,7 +173,7 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
             @Override
             public void onClick(View v) {
 
-                new DownloadFile().execute("https://image.tmdb.org/t/p/w500/vxuoMW6YBt6UsxvMfRNwRl9LtWS.jpg");
+                DownloadFile(v,2);
             }
         });
 
@@ -280,13 +283,14 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
         bannerfinal = banner;
         for(int i=0; i< banner.length; i++) {
             if (i == 0) {
-                Picasso.with(this).load("https://image.tmdb.org/t/p/w500" + banner[i]).into(banner1);
+                Picasso.with(this).load("https://image.tmdb.org/t/p/w500" + bannerfinal[i].replaceAll("null","")).into(banner1);
+                Log.e("wee",bannerfinal[i]);
                 btn1.setVisibility(View.VISIBLE);
             } else if (i == 1) {
-                Picasso.with(this).load("https://image.tmdb.org/t/p/w500" + banner[i]).into(banner2);
+                Picasso.with(this).load("https://image.tmdb.org/t/p/w500" + bannerfinal[i]).into(banner2);
                 btn2.setVisibility(View.VISIBLE);
             } else if (i == 2) {
-                Picasso.with(this).load("https://image.tmdb.org/t/p/w500" + banner[i]).into(banner3);
+                Picasso.with(this).load("https://image.tmdb.org/t/p/w500" + bannerfinal[i]).into(banner3);
                 btn3.setVisibility(View.VISIBLE);
             }
         }
@@ -295,7 +299,6 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
         img22.setScaleType(ImageView.ScaleType.FIT_XY);
 
         Picasso.with(this).load("https://image.tmdb.org/t/p/w500"+back).into(img22);
-        Picasso.with(this).load("https://image.tmdb.org/t/p/w500"+banners.get(0)).into(banner1);
         txtTitle.setText(name);
         Picasso.with(this).load(image).into(imageView);
         txtnumberseason.setText(numberseason+" seasons");
@@ -308,57 +311,49 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
 
     }
 
-    class DownloadFile extends AsyncTask<String,Integer,Long> {
-        ProgressDialog mProgressDialog = new ProgressDialog(TvShowInf.this);// Change Mainactivity.this with your activity name.
-        String strFolderName;
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mProgressDialog.setMessage("Downloading");
-            mProgressDialog.setIndeterminate(false);
-            mProgressDialog.setMax(100);
-            mProgressDialog.setCancelable(true);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mProgressDialog.show();
-        }
-        @Override
-        protected Long doInBackground(String... aurl) {
-            int count;
-            try {
-                URL url = new URL((String) aurl[0]);
-                URLConnection conexion = url.openConnection();
-                conexion.connect();
-                String targetFileName="Name"+".rar";//Change name and subname
-                int lenghtOfFile = conexion.getContentLength();
-                String PATH = Environment.getExternalStorageDirectory()+ "/";
-                File folder = new File(PATH);
-                if(!folder.exists()){
-                    folder.mkdir();//If there is no folder it will be created.
-                }
-                InputStream input = new BufferedInputStream(url.openStream());
-                OutputStream output = new FileOutputStream(PATH+targetFileName);
-                byte data[] = new byte[1024];
-                long total = 0;
-                while ((count = input.read(data)) != -1) {
-                    total += count;
-                    publishProgress ((int)(total*100/lenghtOfFile));
-                    output.write(data, 0, count);
-                }
-                output.flush();
-                output.close();
-                input.close();
-            } catch (Exception e) {}
-            return null;
-        }
-        protected void onProgressUpdate(Integer... progress) {
-            mProgressDialog.setProgress(progress[0]);
-            if(mProgressDialog.getProgress()==mProgressDialog.getMax()){
-                mProgressDialog.dismiss();
-            }
-        }
-        protected void onPostExecute(String result) {
-        }
+    public void DownloadFile (View v, int i){
+        Picasso.with(v.getContext())
+                .load("https://image.tmdb.org/t/p/w500"+(bannerfinal[i].replaceAll("null","")))
+                .into(new Target() {
+                          @Override
+                          public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                              try {
+                                  String root = Environment.getExternalStorageDirectory().toString();
+                                  File myDir = new File(root + "/WatchedIt");
+
+                                  if (!myDir.exists()) {
+                                      myDir.mkdirs();
+                                  }
+
+                                  String name = new Date().toString() + ".jpg";
+                                  myDir = new File(myDir, name);
+                                  FileOutputStream out = new FileOutputStream(myDir);
+                                  bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+
+                                  out.flush();
+                                  out.close();
+
+                              } catch(Exception e){
+                                  // some action
+                              }
+                          }
+
+                          @Override
+                          public void onBitmapFailed(Drawable errorDrawable) {
+                          }
+
+                          @Override
+                          public void onPrepareLoad(Drawable placeHolderDrawable) {
+                          }
+                      }
+                );
+        new AlertDialog.Builder(v.getContext())
+                .setTitle("Download")
+                .setMessage("Image downloaded")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
+
 }
 
 

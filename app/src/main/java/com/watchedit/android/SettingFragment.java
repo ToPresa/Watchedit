@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -54,29 +56,21 @@ public class SettingFragment extends Fragment implements AsyncResponse {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        EditText addCourseText = (EditText) getActivity().findViewById(R.id.editText12);
-        addCourseText.setOnKeyListener(new View.OnKeyListener()
-        {
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (event.getAction() == KeyEvent.ACTION_DOWN)
-                {
-                    switch (keyCode)
-                    {
-                        case KeyEvent.KEYCODE_DPAD_CENTER:
-                        case KeyEvent.KEYCODE_ENTER:
-                            EditText addCourseText = (EditText) getActivity().findViewById(R.id.editText12);
+        final View vv = inflater.inflate(R.layout.fragment_setting, container, false);
+        Button btn = (Button) vv.findViewById(R.id.button45);
+        btn.setOnClickListener(new View.OnClickListener() {
 
-                            //request(addCourseText.getText().toString());
-                            return true;
-                        default:
-                            break;
-                    }
-                }
-                return false;
+
+            @Override
+            public void onClick(View v){
+                EditText tt = (EditText) vv.findViewById(R.id.editText12);
+
+                request(tt.getText().toString());
             }
+
+
         });
-        return inflater.inflate(R.layout.fragment_setting, container, false);
+        return vv;
     }
 
     public void request(String req){
@@ -117,7 +111,13 @@ public class SettingFragment extends Fragment implements AsyncResponse {
         itemid.toArray( ids );
 
         list=(ListView)getActivity().findViewById(R.id.list234);
+        list.setAdapter(null);
         Display adapter=new Display(this.getActivity(), names, imgs, rates, dates);
+        itemname.clear();
+        itemimg.clear();
+        itemrate.clear();
+        itemdate.clear();
+        itemid.clear();
 
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

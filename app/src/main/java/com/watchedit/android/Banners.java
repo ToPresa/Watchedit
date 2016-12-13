@@ -70,9 +70,16 @@ String id;
         Log.e("dss",asyncresult);
 
         if(AccessToken.getCurrentAccessToken()==null) {
-            Log.e("qq",asyncresult);
+            TextView tt=(TextView) findViewById(R.id.textView22);
+            ImageView ee=(ImageView) findViewById(R.id.imageView44);
+            ee.setVisibility(View.VISIBLE);
+            tt.setVisibility(View.VISIBLE);
         }
         else{
+            TextView tt=(TextView) findViewById(R.id.textView22);
+            ImageView ee=(ImageView) findViewById(R.id.imageView44);
+            ee.setVisibility(View.INVISIBLE);
+            tt.setVisibility(View.INVISIBLE);
             try {
                 JSONObject json = new JSONObject(asyncresult);
                 JSONArray a = json.getJSONArray("results");

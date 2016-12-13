@@ -30,6 +30,6 @@
     <string name="similar">Similar Shows</string>
     <string name="download">Download</string>
     <string name="facebook_app_id">307012923025530</string>
-
+    <string name="login">You should login to have access to this feature</string>
 
 </resources>

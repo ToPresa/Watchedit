@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -51,7 +54,36 @@ public class SettingFragment extends Fragment implements AsyncResponse {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        EditText addCourseText = (EditText) getActivity().findViewById(R.id.editText12);
+        addCourseText.setOnKeyListener(new View.OnKeyListener()
+        {
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    switch (keyCode)
+                    {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+                            EditText addCourseText = (EditText) getActivity().findViewById(R.id.editText12);
+
+                            //request(addCourseText.getText().toString());
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
         return inflater.inflate(R.layout.fragment_setting, container, false);
+    }
+
+    public void request(String req){
+
+        APIcall call = new APIcall();
+        call.delegate=this;
+       call.execute("https://api.themoviedb.org/3/search/tv?api_key="+APIKEYthemovieDB+"&language=en-US&query="+req+"&page=1");
     }
 
     @Override
@@ -84,7 +116,7 @@ public class SettingFragment extends Fragment implements AsyncResponse {
         ids = new String[ itemid.size() ];
         itemid.toArray( ids );
 
-        list=(ListView)getActivity().findViewById(R.id.list2);
+        list=(ListView)getActivity().findViewById(R.id.list234);
         Display adapter=new Display(this.getActivity(), names, imgs, rates, dates);
 
         list.setAdapter(adapter);

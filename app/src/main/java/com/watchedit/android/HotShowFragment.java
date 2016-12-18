@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HotShowFragment extends Fragment implements AsyncResponse {
-
+    Button btn;
+    int filter_rating=999;
     ListView list;
     List<String> itemname = new ArrayList<String>();
     List<String> itemimg = new ArrayList<String>();
@@ -58,10 +61,55 @@ public class HotShowFragment extends Fragment implements AsyncResponse {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_hot_show, container, false);
+        View vv=inflater.inflate(R.layout.fragment_hot_show, container, false);
 
-        return view;
+        btn = (Button) vv.findViewById(R.id.button99);
+        final SeekBar seek_bar = (SeekBar) vv.findViewById(R.id.seekBar);
+        seek_bar.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener() {
+
+                    int progress_value;
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        progress_value = progress;
+                        btn.setText("Filter: " +progress);
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                    }
+                }
+        );
+
+        btn.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v){
+                String buttontxt = btn.getText().toString();
+                String[] parts = buttontxt.split(":");
+                filter_rating = Integer.parseInt(parts[1].replaceAll("\\s+",""));
+                request();
+            }
+
+
+        });
+
+        return vv;
     }
+
+    public void request(){
+
+        APIcall call = new APIcall();
+        call.delegate=this;
+        call.execute("https://api.themoviedb.org/3/tv/popular?api_key="+APIKEYthemovieDB+"&language=en-US");
+    }
+
+
     @Override
     public void processFinish(String asyncresult){
         //This method will get call as soon as your AsyncTask is complete. asyncresult will be your result.
@@ -69,13 +117,24 @@ public class HotShowFragment extends Fragment implements AsyncResponse {
     try {
         JSONObject json = new JSONObject(asyncresult);
         JSONArray a = json.getJSONArray("results");
-        for (int i = 0; i < a.length() && i<10; ++i) {
+        for (int i = 0; i < a.length(); ++i) {
             json = a.getJSONObject(i);
-            itemname.add((String) (json.getString("name")));
-            itemimg.add("https://image.tmdb.org/t/p/w500"+(json.getString("poster_path")));
-            itemrate.add((String) (json.getString("vote_average")));
-            itemdate.add("First aired: "+ (json.getString("first_air_date")));
-            itemid.add((String) (json.getString("id")));
+            if(filter_rating != 999) {
+                String rate = json.getString("vote_average");
+                if((double)filter_rating <= Double.parseDouble(rate)){
+                    itemname.add((String) (json.getString("name")));
+                    itemimg.add("https://image.tmdb.org/t/p/w500"+(json.getString("poster_path")));
+                    itemrate.add((String) (json.getString("vote_average")));
+                    itemdate.add("First aired: "+ (json.getString("first_air_date")));
+                    itemid.add((String) (json.getString("id")));
+                }
+            } else {
+                itemname.add((String) (json.getString("name")));
+                itemimg.add("https://image.tmdb.org/t/p/w500"+(json.getString("poster_path")));
+                itemrate.add((String) (json.getString("vote_average")));
+                itemdate.add("First aired: "+ (json.getString("first_air_date")));
+                itemid.add((String) (json.getString("id")));
+            }
         }
     }catch(Exception e){
         return;
@@ -94,6 +153,11 @@ public class HotShowFragment extends Fragment implements AsyncResponse {
 
         list=(ListView)getActivity().findViewById(R.id.list);
         Display adapter=new Display(this.getActivity(), names, imgs, rates, dates);
+        itemname.clear();
+        itemimg.clear();
+        itemrate.clear();
+        itemdate.clear();
+        itemid.clear();
 
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

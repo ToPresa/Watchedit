@@ -11,9 +11,7 @@ import android.widget.RelativeLayout;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-/**
- * Created by topre on 12/12/2016.
- */
+
 public class CustomLayout extends RelativeLayout implements Target {
 
     public CustomLayout(Context context) {

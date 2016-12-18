@@ -83,7 +83,7 @@ String id;
             try {
                 JSONObject json = new JSONObject(asyncresult);
                 JSONArray a = json.getJSONArray("results");
-                for (int i = 0; i < a.length() && i<10; ++i) {
+                for (int i = 0; i < a.length(); ++i) {
                     json = a.getJSONObject(i);
                     itemname.add((String) (json.getString("name")));
                     itemimg.add("https://image.tmdb.org/t/p/w500"+(json.getString("poster_path")));

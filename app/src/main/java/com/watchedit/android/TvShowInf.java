@@ -36,6 +36,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -77,12 +85,14 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
     String[] bannerfinal;
     private String APIKEYthemovieDB = "cc0ee2bbfea45383a8c9381a4995aecd";
     private  ImageView img22;
-
     private ProgressDialog simpleWaitDialog;
+    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mUser = mRootRef.child("user");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     "com.watchedit.android",
@@ -107,8 +117,35 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
         setContentView(R.layout.activity_tv_show_inf);
 
         addListenerOnButton();
+        if (AccessToken.getCurrentAccessToken() != null) {
+            mUser.child(AccessToken.getCurrentAccessToken().getToken()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //for(int i=0;i<dataSnapshot.getValue().)
+                    String a = dataSnapshot.getValue().toString().replace("{", "");
+                    String b = a.replace("}", "");
+                    String c[] = b.split(", ");
+                    for (int i = 0; i < c.length; i++) {
+                        String d[] = c[i].split("=");
+                        if (d[1].equals(id)) {
+                            ImageView plus = (ImageView) findViewById(R.id.imageView2);
+                            ImageView minus = (ImageView) findViewById(R.id.imageView4);
+                            plus.setVisibility(View.INVISIBLE);
+                            minus.setVisibility(View.VISIBLE);
+                        }
 
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e("tt", "onCancelled", databaseError.toException());
+                }
+            });
+        }
     }
+
 
     public void addListenerOnButton() {
 
@@ -118,6 +155,55 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
         Button btn1 = (Button) findViewById(R.id.button);
         Button btn2 = (Button) findViewById(R.id.button2);
         Button btn3 = (Button) findViewById(R.id.button3);
+        final ImageView plus = (ImageView) findViewById(R.id.imageView2);
+        final ImageView minus = (ImageView) findViewById(R.id.imageView4);
+
+        plus.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // your code here
+                if (AccessToken.getCurrentAccessToken() != null) {
+                    mUser.child(AccessToken.getCurrentAccessToken().getToken()).push().setValue(id);
+                    plus.setVisibility(View.INVISIBLE);
+                    minus.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        minus.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // your code here
+                if (AccessToken.getCurrentAccessToken() != null) {
+
+
+                    mUser.child(AccessToken.getCurrentAccessToken().getToken()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //for(int i=0;i<dataSnapshot.getValue().)
+                            String a=dataSnapshot.getValue().toString().replace("{","");
+                            String b=a.replace("}","");
+                            String c[]=b.split(", ");
+                            for(int i=0; i<c.length;i++){
+                                String d[]=c[i].split("=");
+                                if(d[1].equals(id)){
+                                    mUser.child(AccessToken.getCurrentAccessToken().getToken()).child(d[0]).removeValue();
+                                }
+                                Log.e("wew",d[0]);
+                                Log.e("wew",d[1]);
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.e("tt", "onCancelled", databaseError.toException());
+                        }
+                    });
+                    minus.setVisibility(View.INVISIBLE);
+                    plus.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         img.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

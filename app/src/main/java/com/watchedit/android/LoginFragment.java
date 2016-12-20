@@ -82,20 +82,7 @@ public class LoginFragment extends Fragment {
         if(AccessToken.getCurrentAccessToken()!=null) {
 
 
-           /* mRootRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    dataSnapshot.child(AccessToken.getCurrentAccessToken().getToken());
 
-                    Log.e("test",dataSnapshot.toString());
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-*/
             GraphRequest request1 = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
 
                 @Override

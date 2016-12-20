@@ -238,8 +238,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Episodes"
         android:id="@+id/textView89"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/horizontalScrollView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp" />
 
     <ListView
         android:id="@+id/list2"

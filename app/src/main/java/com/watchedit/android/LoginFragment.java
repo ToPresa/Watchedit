@@ -71,7 +71,7 @@ public class LoginFragment extends Fragment {
                 if (currentAccessToken == null) {
                     //write your code here what to do when user clicks on facebook logout
 
-                    getActivity().setTitle(getString(R.string.title_section1));
+                    //getActivity().setTitle(getString(R.string.title_section1));
                     ImageView xx = (ImageView) view.findViewById(R.id.imageView2);
                     TextView xc= (TextView) view.findViewById(R.id.textView);
                     xx.setVisibility(View.GONE);

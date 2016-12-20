@@ -122,20 +122,21 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     //for(int i=0;i<dataSnapshot.getValue().)
-                    String a = dataSnapshot.getValue().toString().replace("{", "");
-                    String b = a.replace("}", "");
-                    String c[] = b.split(", ");
-                    for (int i = 0; i < c.length; i++) {
-                        String d[] = c[i].split("=");
-                        if (d[1].equals(id)) {
-                            ImageView plus = (ImageView) findViewById(R.id.imageView2);
-                            ImageView minus = (ImageView) findViewById(R.id.imageView4);
-                            plus.setVisibility(View.INVISIBLE);
-                            minus.setVisibility(View.VISIBLE);
+                    if(dataSnapshot.getValue()!=null) {
+                        String a = dataSnapshot.getValue().toString().replace("{", "");
+                        String b = a.replace("}", "");
+                        String c[] = b.split(", ");
+                        for (int i = 0; i < c.length; i++) {
+                            String d[] = c[i].split("=");
+                            if (d[1].equals(id)) {
+                                ImageView plus = (ImageView) findViewById(R.id.imageView2);
+                                ImageView minus = (ImageView) findViewById(R.id.imageView4);
+                                plus.setVisibility(View.INVISIBLE);
+                                minus.setVisibility(View.VISIBLE);
+                            }
+
                         }
-
                     }
-
                 }
 
                 @Override

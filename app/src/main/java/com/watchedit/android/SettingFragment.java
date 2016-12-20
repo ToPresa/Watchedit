@@ -15,6 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -45,10 +49,10 @@ public class SettingFragment extends Fragment implements AsyncResponse {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        APIcall call = new APIcall();
-        call.delegate=this;
-        call.execute("https://api.themoviedb.org/3/tv/top_rated?api_key="+APIKEYthemovieDB+"&language=en-US");
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+        //APIcall call = new APIcall();
+        //call.delegate=this;
+        //call.execute("https://api.themoviedb.org/3/tv/top_rated?api_key="+APIKEYthemovieDB+"&language=en-US");
         //call.execute("https://api.themoviedb.org/3/search/tv?api_key="+APIKEYthemovieDB+"&language=en-US&query="+"string"+"&page=1");
     }
 
@@ -57,19 +61,31 @@ public class SettingFragment extends Fragment implements AsyncResponse {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View vv = inflater.inflate(R.layout.fragment_setting, container, false);
-        Button btn = (Button) vv.findViewById(R.id.button45);
-        btn.setOnClickListener(new View.OnClickListener() {
+        if (AccessToken.getCurrentAccessToken() == null) {
+            TextView tt = (TextView) vv.findViewById(R.id.textView523);
+            ImageView ee = (ImageView) vv.findViewById(R.id.imageView532);
+            ee.setVisibility(View.VISIBLE);
+            tt.setVisibility(View.VISIBLE);
+        }
+        else {
+            TextView tt = (TextView) vv.findViewById(R.id.textView523);
+            ImageView ee = (ImageView) vv.findViewById(R.id.imageView532);
+            ee.setVisibility(View.INVISIBLE);
+            tt.setVisibility(View.INVISIBLE);
+            Button btn = (Button) vv.findViewById(R.id.button45);
+            btn.setOnClickListener(new View.OnClickListener() {
 
 
-            @Override
-            public void onClick(View v){
-                EditText tt = (EditText) vv.findViewById(R.id.editText12);
+                @Override
+                public void onClick(View v) {
+                    EditText tt = (EditText) vv.findViewById(R.id.editText12);
 
-                request(tt.getText().toString());
-            }
+                    request(tt.getText().toString());
+                }
 
 
-        });
+            });
+        }
         return vv;
     }
 

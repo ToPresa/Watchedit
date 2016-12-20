@@ -217,6 +217,8 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
             public void onClick(View v) {
                 // your code here
                 Intent intent = new Intent(TvShowInf.this, Episodes.class);
+                intent.putExtra("countseasons", numberseason);
+                intent.putExtra("idseason", id);
                 TvShowInf.this.startActivity(intent);
             }
         });

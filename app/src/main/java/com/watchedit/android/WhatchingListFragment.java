@@ -108,7 +108,6 @@ public class WhatchingListFragment extends Fragment implements AsyncResponse{
 
         APIcall call = new APIcall();
         call.delegate=this;
-        Log.e("caralho",req);
         call.execute("https://api.themoviedb.org/3/tv/"+req+"?api_key="+APIKEYthemovieDB+"&language=en-US");
     }
     @Override

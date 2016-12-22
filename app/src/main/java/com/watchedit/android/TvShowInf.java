@@ -209,7 +209,12 @@ public class TvShowInf extends AppCompatActivity implements AsyncResponse{
         img.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // your code here
-                onBackPressed();
+                if(isTaskRoot()){
+                    finish();
+                    System.exit(0);
+                }
+                else
+                    onBackPressed();
             }
         });
 

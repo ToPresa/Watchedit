@@ -92,7 +92,10 @@ public class HotShowFragment extends Fragment implements AsyncResponse {
             public void onClick(View v){
                 String buttontxt = btn.getText().toString();
                 String[] parts = buttontxt.split(":");
-                filter_rating = Integer.parseInt(parts[1].replaceAll("\\s+",""));
+                if(parts.length!=1)
+                    filter_rating = Integer.parseInt(parts[1].replaceAll("\\s+",""));
+                else
+                filter_rating=1;
                 request();
             }
 

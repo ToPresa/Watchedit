@@ -34,6 +34,8 @@
         </activity>
         <activity android:name=".Banners" />
         <activity android:name=".Episodes" />
+        <service android:name=".Notification" />
+        <service android:name=".NotificationSeries" />
     </application>
 
 </manifest>

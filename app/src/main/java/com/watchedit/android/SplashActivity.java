@@ -12,6 +12,7 @@ public class SplashActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, AndroidNavDrawerActivity.class);
         startActivity(intent);
+
         finish();
     }
 }

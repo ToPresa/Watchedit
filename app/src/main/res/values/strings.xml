@@ -33,5 +33,8 @@
     <string name="login">You should login to have access to this feature</string>
     <string name="empty">Your watching list is empty, go and add some shows</string>
     <string name="notenough">You don\'t have enough shows on the Watching List, go and add some more</string>
-
+    <string name="newep">New episode</string>
+    <string name="ep">Today was released a new episode of</string>
+    <string name="newseason">New season</string>
+    <string name="season">Today was released a new season of</string>
 </resources>

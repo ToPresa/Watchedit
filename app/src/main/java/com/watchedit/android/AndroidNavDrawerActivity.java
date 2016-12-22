@@ -57,7 +57,8 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        startService(new Intent(this, Notification.class));
+        startService(new Intent(this, NotificationSeries.class));
         setContentView(R.layout.activity_main);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -72,6 +73,30 @@ public class AndroidNavDrawerActivity extends AppCompatActivity
             name=getString(R.string.title_section1);
         }
 
+
+
+    }
+    @Override
+    public void onStart(){
+        super.onStart();
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mTitle = getTitle();
+
+        // Set up the drawer.
+        mNavigationDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+
+    }
+    @Override
+    public void onRestart(){
+        super.onRestart();
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
